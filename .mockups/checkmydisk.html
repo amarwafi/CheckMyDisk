@@ -1,0 +1,125 @@
+<section id="cmd-preview" aria-label="CheckMyDisk desktop mockup with sample data">
+  <header><span><i data-lucide="hard-drive" aria-hidden="true"></i> CheckMyDisk</span><small>Sample data</small></header>
+  <div class="workspace">
+    <nav aria-label="Drives">
+      <h2>Drives</h2>
+      <button type="button" data-drive="0" aria-pressed="true"><strong>System SSD</strong><small>1 TB · NVMe</small><span class="dot good" aria-label="Passed"></span></button>
+      <button type="button" data-drive="1" aria-pressed="false"><strong>Archive HDD</strong><small>4 TB · SATA</small><span class="dot warn" aria-label="Warning"></span></button>
+      <button type="button" data-drive="2" aria-pressed="false"><strong>External SSD</strong><small>500 GB · USB</small><span class="dot none" aria-label="Unknown"></span></button>
+    </nav>
+    <main aria-live="polite">
+      <div class="identity"><div><h1>System SSD</h1><p id="cmd-device">1 TB NVMe · /dev/nvme0</p></div></div>
+      <div class="summary good">
+        <div class="indicator" aria-hidden="true">✓</div>
+        <div><h2 id="cmd-status">SMART passed</h2><p id="cmd-reason">No critical warnings or media errors reported.</p></div>
+      </div>
+      <dl>
+        <div><dt>Temperature</dt><dd id="cmd-temp">38 °C</dd></div>
+        <div><dt>Power-on hours</dt><dd id="cmd-hours">4,218 h</dd></div>
+      </dl>
+      <h2>SMART indicators</h2>
+      <table><thead><tr><th scope="col">Indicator</th><th scope="col">Reported value</th></tr></thead>
+        <tbody id="cmd-rows">
+          <tr><th scope="row">Estimated endurance used</th><td>7%</td></tr>
+          <tr><th scope="row">Media and data integrity errors</th><td>0</td></tr>
+          <tr><th scope="row">Critical warning flags</th><td>0</td></tr>
+        </tbody>
+      </table>
+      <p id="cmd-unavailable" hidden>SMART indicators are unavailable for this connection.</p>
+    </main>
+  </div>
+</section>
+<style>
+  #cmd-preview {
+    --shell: light-dark(#f7f9fc,#171e2b); --sheet: light-dark(#fff,#1e2736);
+    --ink: light-dark(#18243a,#e8eefb); --dim: light-dark(#506079,#aab8d0);
+    --line: light-dark(#dce4ef,#344359); --selected: light-dark(#e4ecfb,#283a59);
+    --green: light-dark(#11664a,#8be0b9); --green-bg: light-dark(#e7f6ee,#203c34);
+    --amber: light-dark(#825000,#ffcd78); --amber-bg: light-dark(#fff1d8,#443727);
+    font: 14px/1.45 system-ui,sans-serif; color:var(--ink); background:var(--sheet);
+    border:1px solid var(--line); border-radius:16px; overflow:hidden;
+  }
+  #cmd-preview *, #cmd-preview *::before {box-sizing:border-box}
+  #cmd-preview header {display:flex;align-items:center;gap:18px;padding:16px 22px;border-bottom:1px solid var(--line);background:var(--shell)}
+  #cmd-preview header span {display:flex;align-items:center;gap:9px;font-weight:700;letter-spacing:-.01em}
+  #cmd-preview small, #cmd-preview p, #cmd-preview dt {color:var(--dim)}
+  #cmd-preview .workspace {display:grid;grid-template-columns:minmax(170px,23%) minmax(0,1fr)}
+  #cmd-preview nav {background:var(--shell);border-right:1px solid var(--line);padding:23px 12px}
+  #cmd-preview nav h2 {margin:0 9px 12px}
+  #cmd-preview button {font:inherit;text-align:left;color:inherit;display:grid;grid-template-columns:1fr auto;gap:2px 10px;align-items:center;width:100%;border:1px solid transparent;background:transparent;border-radius:9px;padding:9px;margin-bottom:4px}
+  #cmd-preview button[aria-pressed="true"] {background:var(--selected)}
+  #cmd-preview button:hover {border-color:var(--line)}
+  #cmd-preview button small {grid-row:2}
+  #cmd-preview .dot {grid-column:2;grid-row:1 / span 2;width:8px;height:8px;border-radius:50%;background:currentColor}
+  #cmd-preview .good {color:var(--green)}
+  #cmd-preview .warn {color:var(--amber)}
+  #cmd-preview .none {color:var(--dim)}
+  #cmd-preview main {padding:26px clamp(16px,4vw,40px) 32px;min-height:454px}
+  #cmd-preview h1 {font-size:30px;letter-spacing:-.045em;line-height:1.12;margin:0 0 5px}
+  #cmd-preview h2 {font-size:14px;margin:0;font-weight:700}
+  #cmd-preview p {margin:0}
+  #cmd-preview .summary {display:flex;align-items:center;gap:14px;border-radius:10px;padding:14px 16px;margin-top:20px;background:var(--selected)}
+  #cmd-preview .summary.good {background:var(--green-bg)}
+  #cmd-preview .summary.warn {background:var(--amber-bg)}
+  #cmd-preview .summary p {color:inherit;margin-top:2px}
+  #cmd-preview .indicator {width:32px;height:32px;flex:0 0 32px;display:grid;place-items:center;border:1px solid currentColor;border-radius:50%;font-weight:700}
+  #cmd-preview dl {display:flex;flex-wrap:wrap;gap:12px 44px;margin:19px 0 22px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+  #cmd-preview dt {font-size:12px}
+  #cmd-preview dd {font-size:20px;font-weight:650;font-variant-numeric:tabular-nums;margin:2px 0 0}
+  #cmd-preview table {width:100%;border-collapse:collapse;margin-top:6px;text-align:left}
+  #cmd-preview th,#cmd-preview td {padding:8px 0;border-bottom:1px solid var(--line);font-weight:400}
+  #cmd-preview thead th {font-size:12px;color:var(--dim)}
+  #cmd-preview th:last-child,#cmd-preview td {text-align:right;padding-left:12px}
+  #cmd-preview #cmd-unavailable {margin-top:9px}
+  #cmd-preview [hidden] {display:none}
+  @media(max-width:580px) {
+    #cmd-preview .workspace {grid-template-columns:1fr}
+    #cmd-preview nav {display:flex;flex-wrap:wrap;gap:4px;border-right:0;border-bottom:1px solid var(--line);padding:10px}
+    #cmd-preview nav h2 {width:100%;margin-bottom:0}
+    #cmd-preview button {width:auto;flex:1 1 125px;margin-bottom:0}
+    #cmd-preview main {min-height:410px}
+  }
+</style>
+<script>
+{
+  const root = document.getElementById("cmd-preview");
+  const drives = [
+    ["System SSD","1 TB NVMe · /dev/nvme0","good","✓","SMART passed","No critical warnings or media errors reported.","38 °C","4,218 h",[["Estimated endurance used","7%"],["Media and data integrity errors","0"],["Critical warning flags","0"]]],
+    ["Archive HDD","4 TB SATA · /dev/sda","warn","!","Warning","The drive reports 4 pending sectors.","44 °C","19,602 h",[["Reallocated sectors","12"],["Pending sectors","4"],["Offline uncorrectable sectors","0"]]],
+    ["External SSD","500 GB USB · /dev/sdb","none","?","Health unknown","The USB enclosure did not return SMART data.","Unavailable","Unavailable",[]]
+  ];
+  const buttons = [...root.querySelectorAll("button[data-drive]")];
+  function select(index) {
+    const [name,device,tone,icon,status,reason,temp,hours,rows] = drives[index];
+    buttons.forEach((button,i) => button.setAttribute("aria-pressed", i === index));
+    root.querySelector("h1").textContent = name;
+    root.querySelector(".summary").className = "summary " + tone;
+    root.querySelector(".indicator").textContent = icon;
+    for (const [id,value] of Object.entries({device,status,reason,temp,hours})) {
+      root.querySelector("#cmd-" + id).textContent = value;
+    }
+    const tbody = root.querySelector("#cmd-rows");
+    tbody.replaceChildren();
+    for (const [label,value] of rows) {
+      const row = tbody.insertRow();
+      const heading = document.createElement("th");
+      heading.scope = "row";
+      heading.textContent = label;
+      row.append(heading);
+      row.insertCell().textContent = value;
+    }
+    root.querySelector("table").hidden = !rows.length;
+    root.querySelector("#cmd-unavailable").hidden = Boolean(rows.length);
+  }
+  buttons.forEach((button,index) => button.addEventListener("click", () => select(index)));
+  function restore(state) {
+    const index = state?.privateContent?.drive;
+    if (Number.isInteger(index) && drives[index]) select(index);
+  }
+  restore(window.openai?.widgetState);
+  window.addEventListener("openai:set_globals", event => restore(event.detail?.globals?.widgetState));
+  buttons.forEach((button,index) => button.addEventListener("click", () => {
+    window.openai?.setWidgetState?.({modelContent:{drive:drives[index][0]},privateContent:{drive:index}})?.catch(() => {});
+  }));
+}
+</script>
